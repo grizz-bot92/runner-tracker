@@ -1,0 +1,10 @@
+POST http://localhost:3000/races
+Content-Type: application/json
+
+{
+  "name": "deleted race",
+  "date": "2025-08-15",
+  "distance": 100999,
+  "elevation_gain": 48000,
+  "cutoff_time": "45 hours"
+}

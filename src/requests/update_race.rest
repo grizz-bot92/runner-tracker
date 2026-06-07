@@ -1,0 +1,10 @@
+PUT http://localhost:3000/races/1
+Content-Type: application/json
+
+{
+  "name": "Updated 100k",
+  "date": "2025-08-15",
+  "distance": 62,
+  "elevation_gain": 9000,
+  "cutoff_time": "32 hours"
+}
