@@ -4,7 +4,7 @@ import pool from '../db';
 const  raceRouter: Router = express.Router();
 
 raceRouter.get('/', async (req: Request, res: Response) => {
-  const result =  await pool.query('SELECT * from race')
+  const result =  await pool.query('SELECT * FROM race')
   res.json({ message: 'List of races: ', race: result.rows });
 });
 
