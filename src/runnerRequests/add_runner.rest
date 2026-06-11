@@ -2,9 +2,9 @@ POST http://localhost:3000/runners
 Content-Type: application/json
 
 {
-  "name": "Brandon",
-  "age": 34,
-  "bib_number": 33,
+  "name": "Tommy",
+  "age": 56,
+  "bib_number": 333,
   "emergency_contact_name": "Nicole",
   "emergency_contact-number": "890-000",
   "race_id": 1

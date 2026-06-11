@@ -1,0 +1,10 @@
+PUT http://localhost:3000/runners/1
+Content-Type: application/json
+
+{
+  "name": "Tommy",
+  "age": 67,
+  "bib_number": 44,
+  "emergency_contact_name": "Nicole",
+  "emergency_contact_number": "890-0989"
+}
