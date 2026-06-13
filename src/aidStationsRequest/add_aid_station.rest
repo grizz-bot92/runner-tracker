@@ -2,9 +2,9 @@ POST http://localhost:3000/aid_stations
 Content-Type: application/json
 
 {
-  "name": "Voyager",
-  "mile_marker": 32.8,
-  "cutoff_time": "8:00",
+  "name": "Outbound",
+  "mile_marker": 74.1,
+  "cutoff_time": "5:00",
   "crew_access": true,
   "race_id": 1
 }

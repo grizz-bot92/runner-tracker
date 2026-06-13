@@ -9,7 +9,7 @@ runnerRouter.get('/', async(req: Request, res: Response) => {
   res.json({ message: 'List of runners', runner: result.rows })
 });
 
-runnerRouter.get('/', async(req:Request, res:Response) => {
+runnerRouter.get('/:id', async(req:Request, res:Response) => {
   const id = req.params.id;
   const result = await pool.query('SELECT * FROM runner WHERE id = $1', [`${id}`]);
 
@@ -30,12 +30,22 @@ runnerRouter.post('/', async(req:Request, res:Response) =>{
   res.json({ message: 'Runner Created:', runner: result.rows[0] })
 });
 
-runnerRouter.put('/', (req: Request, res: Response) => {
-  //pass
+runnerRouter.put('/:id', async(req: Request, res: Response) => {
+  const id = req.params.id;
+  const { name, age, bib_number, emergency_contact_name, emergency_contact_number } = req.body;
+  const update = await pool.query(
+    'UPDATE runner SET name = $1, age = $2, bib_number = $3, emergency_contact_name = $4, emergency_contact_number = $5 WHERE id = $6 RETURNING *',
+    [name, age, bib_number, emergency_contact_name, emergency_contact_number, `${id}`]
+    );
+    res.json({ message: `Runner ${id} updated`, runner: update.rows[0] })
 });
 
-runnerRouter.delete('/', (req:Request, res:Response) =>{
-  //pass
+runnerRouter.delete('/:id', async(req:Request, res:Response) =>{
+  const id = req.params.id;
+  const result = await pool.query('DELETE FROM runner WHERE id = $1', [`${id}`])
+
+  res.status(204).end();
+
 })
 
 export default runnerRouter;

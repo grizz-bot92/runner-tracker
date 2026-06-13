@@ -1,0 +1,9 @@
+PUT http://localhost:3000/aid_stations/3
+Content-Type: application/json
+
+{
+  "name": "Hooks revenge",
+  "mile_marker": 44.1,
+  "cutoff_time": "7:45",
+  "crew_access": true
+}

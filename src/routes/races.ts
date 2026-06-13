@@ -20,7 +20,6 @@ raceRouter.get('/:id', async(req: Request, res: Response) => {
 
 });
 
-
 raceRouter.post('/', async (req: Request, res: Response) => {
   const { name, date, distance, elevation_gain, cutoff_time } = req.body;
   const result = await pool.query(
@@ -38,7 +37,7 @@ raceRouter.put('/:id', async(req:Request, res:Response) =>{
   const update = await pool.query(
     'UPDATE race SET name=$1, date=$2, distance=$3, elevation_gain=$4, cutoff_time=$5 WHERE id = $6 RETURNING *',
     [name, date, distance, elevation_gain, cutoff_time, `${id}`]
-  )
+  );
   
   res.json({ message: `Race ${id} updated`, race: update.rows[0] });
 });
