@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import pool from './db';
+import cors from 'cors';
 import raceRouter from './routes/races';
 import runnerRouter from './routes/runners';
 import aidStationRouter from './routes/aidStations';
@@ -12,6 +13,7 @@ const app  = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use(cors());
 app.use('/races', raceRouter);
 app.use('/runners', runnerRouter);
 app.use('/aid_stations', aidStationRouter);

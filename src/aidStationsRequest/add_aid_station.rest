@@ -1,9 +1,9 @@
-POST http://localhost:3000/aid_stations
+POST http://localhost:8080/aid_stations
 Content-Type: application/json
 
 {
-  "name": "Outbound",
-  "mile_marker": 74.1,
+  "name": "start",
+  "mile_marker": 0.0,
   "cutoff_time": "5:00",
   "crew_access": true,
   "race_id": 1

@@ -1,6 +1,5 @@
 import express, { Request, Response, Router} from 'express';
 import pool from '../db';
-import { brotliDecompressSync } from 'node:zlib';
 
 const aidStationRouter: Router  = express.Router();
 
@@ -27,7 +26,7 @@ aidStationRouter.post('/', async(req:Request, res:Response) =>{
     'INSERT INTO aid_station (name, mile_marker, cutoff_time, crew_access, race_id) VALUES($1,$2,$3,$4,$5) RETURNING *',
     [name, mile_marker, cutoff_time, crew_access, race_id]);
 
-    res.json({ message: 'Aid Station created', aid_station: result })
+    res.json({ message: 'Aid Station created', aid_station: result.rows[0] })
 });
 
 aidStationRouter.put('/:id', async(req:Request, res:Response) => { 

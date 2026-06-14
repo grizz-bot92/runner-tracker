@@ -1,1 +1,1 @@
-GET http://localhost:3000/aid_stations
+GET http://localhost:8080/aid_stations
