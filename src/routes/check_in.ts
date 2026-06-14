@@ -20,13 +20,16 @@ checkInRouter.get('/:id', async(req:Request, res:Response) => {
 });
 
 checkInRouter.post('/', async(req:Request, res:Response) => {
-  const { runner_id, aid_station_id, checked_in_at } = req.body;
+  const { bib_number, aid_station_id, checked_in_at } = req.body;
+  const runner = await pool.query('SELECT id FROM runner WHERE bib_number = $1', [bib_number]);
+  const runner_id = runner.rows[0].id;
+
   const result = await pool.query(
     'INSERT INTO check_in(runner_id, aid_station_id, checked_in_at) VALUES($1,$2,$3) RETURNING *',
     [runner_id, aid_station_id, checked_in_at]
   );
 
-  res.json({ message: 'Check in created', checked_in: result });
+  res.json({ message: 'Check in created', checked_in: result.rows[0] });
 
 });
 

@@ -1,8 +1,8 @@
-POST http://localhost:3000/check_in
+POST http://localhost:8080/check_in
 Content-Type: application/json
 
 {
-  "runner_id": 2,
+  "bib_number": 233,
   "aid_station_id": 2,
   "checked_in_at": "2025-08-15T14:30:00Z"
 }
