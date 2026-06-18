@@ -20,6 +20,19 @@ runnerRouter.get('/:id', async(req:Request, res:Response) => {
   }
 });
 
+runnerRouter.get('/search', async(req:Request, res:Response) => {
+  const bib_number  = req.query.bib_number;
+  
+  const result = await pool.query(`SELECT r.name, r.bib_number, c.checked_in_at, a.mile_marker, a.name 
+    FROM runner r
+    LEFT JOIN check_in c ON r.id = c.runner_id
+    LEFT JOIN aid_station a ON a.id = c.aid_station_id 
+    WHERE r.bib_number = $1`, [`${bib_number}`] );
+    
+    res.json({ message: '', runner: result.rows });
+  
+  });
+
 runnerRouter.post('/', async(req:Request, res:Response) =>{
   const { name, age, bib_number, emergency_contact_name, emergency_contact_number, race_id} = req.body;
   const result = await pool.query(
