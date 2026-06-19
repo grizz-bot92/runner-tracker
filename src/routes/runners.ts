@@ -18,9 +18,22 @@ runnerRouter.get('/search', async(req:Request, res:Response) => {
     LEFT JOIN aid_station a ON a.id = c.aid_station_id 
     WHERE r.bib_number = $1`, [`${bib_number}`] );
     
-    res.json({ message: '', runner: result.rows });
+    res.json({ message: 'runner update', runner: result.rows });
   
+});
+
+runnerRouter.get('/search/leaderboard', async(req:Request, res:Response) =>{
+  const result = await pool.query(
+  `SELECT * FROM (
+    SELECT DISTINCT ON (r.id) r.name AS runner_name, r.bib_number, a.mile_marker, a.name AS aid_station_name, c.checked_in_at
+    FROM runner r LEFT JOIN check_in c ON r.id = c.runner_id
+    LEFT JOIN aid_station a ON a.id = c.aid_station_id
+    ORDER BY r.id, a.mile_marker DESC 
+  ) AS Leaderboard ORDER BY mile_marker DESC`);
+
+    res.json({ message: 'runner update', runner: result.rows });
   });
+
 
 runnerRouter.get('/:id', async(req:Request, res:Response) => {
   const id = req.params.id;
@@ -63,3 +76,6 @@ runnerRouter.delete('/:id', async(req:Request, res:Response) =>{
 })
 
 export default runnerRouter;
+
+
+
