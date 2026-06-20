@@ -18,7 +18,7 @@ runnerRouter.get('/search', async(req:Request, res:Response) => {
     FROM runner r
     LEFT JOIN check_in c ON r.id = c.runner_id
     LEFT JOIN aid_station a ON a.id = c.aid_station_id 
-    WHERE r.name = $1`, [`${name}`] );
+    WHERE r.name ILIKE $1 `, [`%${name}%`] );
 
     res.json({ message: 'runner update', runner: result.rows });
   
