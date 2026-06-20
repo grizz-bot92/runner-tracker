@@ -11,15 +11,30 @@ runnerRouter.get('/', async(req: Request, res: Response) => {
 
 runnerRouter.get('/search', async(req:Request, res:Response) => {
   const bib_number  = req.query.bib_number;
+  const name = req.query.name;
   
-  const result = await pool.query(`SELECT r.name AS runner_name, r.bib_number, c.checked_in_at, a.mile_marker, a.name AS aid_station 
+  if(name){
+    const result = await pool.query(`SELECT r.name AS runner_name, r.bib_number, c.checked_in_at, a.mile_marker, a.name AS aid_station 
+    FROM runner r
+    LEFT JOIN check_in c ON r.id = c.runner_id
+    LEFT JOIN aid_station a ON a.id = c.aid_station_id 
+    WHERE r.name = $1`, [`${name}`] );
+
+    res.json({ message: 'runner update', runner: result.rows });
+  
+  } else if(bib_number){
+    const result = await pool.query(`SELECT r.name AS runner_name, r.bib_number, c.checked_in_at, a.mile_marker, a.name AS aid_station 
     FROM runner r
     LEFT JOIN check_in c ON r.id = c.runner_id
     LEFT JOIN aid_station a ON a.id = c.aid_station_id 
     WHERE r.bib_number = $1`, [`${bib_number}`] );
-    
+
     res.json({ message: 'runner update', runner: result.rows });
-  
+    
+  } else {
+    return res.status(404).send('No runner found')
+  }
+
 });
 
 runnerRouter.get('/search/leaderboard', async(req:Request, res:Response) =>{
