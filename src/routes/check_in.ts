@@ -29,7 +29,17 @@ checkInRouter.post('/', async(req:Request, res:Response) => {
     [runner_id, aid_station_id, checked_in_at]
   );
 
-  res.json({ message: 'Check in created', checked_in: result.rows[0] });
+  const displayRunner = await pool.query(`
+    SELECT r.name AS runner_name, a.name AS aid_station_name, c.checked_in_at
+    FROM runner r
+    LEFT JOIN check_in c ON r.id = c.runner_id
+    LEFT JOIN aid_station a ON a.id = c.aid_station_id
+    WHERE r.id = $1 AND a.id = $2
+    `, [`${runner_id}`, `${aid_station_id}`]);
+
+  
+  console.log("RAW FROM DB:", result.rows[0].checked_in_at);
+  res.json({ message: 'Check in created', checked_in: result.rows[0], displayRunner: displayRunner.rows[0] });
 
 });
 

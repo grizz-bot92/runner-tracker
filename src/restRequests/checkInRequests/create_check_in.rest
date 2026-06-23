@@ -2,7 +2,7 @@ POST http://localhost:8080/check_in
 Content-Type: application/json
 
 {
-  "bib_number": 233,
+  "bib_number": 102,
   "aid_station_id": 2,
   "checked_in_at": "2025-08-15T14:30:00Z"
 }
