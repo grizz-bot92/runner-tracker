@@ -18,7 +18,8 @@ runnerRouter.get('/search', async(req:Request, res:Response) => {
     FROM runner r
     LEFT JOIN check_in c ON r.id = c.runner_id
     LEFT JOIN aid_station a ON a.id = c.aid_station_id 
-    WHERE r.name ILIKE $1 `, [`%${name}%`] );
+    WHERE r.name ILIKE $1
+    ORDER BY c.checked_in_at ASC`, [`%${name}%`]);
 
     res.json({ message: 'runner update', runner: result.rows });
   
@@ -27,7 +28,8 @@ runnerRouter.get('/search', async(req:Request, res:Response) => {
     FROM runner r
     LEFT JOIN check_in c ON r.id = c.runner_id
     LEFT JOIN aid_station a ON a.id = c.aid_station_id 
-    WHERE r.bib_number = $1`, [`${bib_number}`] );
+    WHERE r.bib_number = $1
+    ORDER BY c.checked_in_at ASC`, [`${bib_number}`] );
 
     res.json({ message: 'runner update', runner: result.rows });
     
@@ -40,11 +42,11 @@ runnerRouter.get('/search', async(req:Request, res:Response) => {
 runnerRouter.get('/search/leaderboard', async(req:Request, res:Response) =>{
   const result = await pool.query(
   `SELECT * FROM (
-    SELECT DISTINCT ON (r.id) r.name AS runner_name, r.bib_number, a.mile_marker, a.name AS aid_station_name, c.checked_in_at
+    SELECT DISTINCT ON (r.id) r.name AS runner_name, r.bib_number, a.mile_marker, a.name AS aid_station, c.checked_in_at
     FROM runner r LEFT JOIN check_in c ON r.id = c.runner_id
     LEFT JOIN aid_station a ON a.id = c.aid_station_id
-    ORDER BY r.id, a.mile_marker DESC 
-  ) AS Leaderboard ORDER BY mile_marker DESC`);
+    ORDER BY r.id, a.mile_marker DESC NULLS LAST
+  ) AS Leaderboard ORDER BY mile_marker DESC NULLS LAST`);
 
     res.json({ message: 'runner update', runner: result.rows });
   });
@@ -86,7 +88,7 @@ runnerRouter.delete('/:id', async(req:Request, res:Response) =>{
   const id = req.params.id;
   const result = await pool.query('DELETE FROM runner WHERE id = $1', [`${id}`])
 
-  res.status(204).end();
+  res.status(204).end()
 
 })
 
