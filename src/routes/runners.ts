@@ -14,7 +14,7 @@ runnerRouter.get('/search', async(req:Request, res:Response) => {
   const name = req.query.name;
   
   if(name){
-    const result = await pool.query(`SELECT r.name AS runner_name, r.bib_number, c.checked_in_at, a.mile_marker, a.name AS aid_station 
+    const result = await pool.query(`SELECT r.name AS runner_name, r.bib_number, r.status, c.checked_in_at, a.mile_marker, a.name AS aid_station 
     FROM runner r
     LEFT JOIN check_in c ON r.id = c.runner_id
     LEFT JOIN aid_station a ON a.id = c.aid_station_id 
@@ -24,7 +24,7 @@ runnerRouter.get('/search', async(req:Request, res:Response) => {
     res.json({ message: 'runner update', runner: result.rows });
   
   } else if(bib_number){
-    const result = await pool.query(`SELECT r.name AS runner_name, r.bib_number, c.checked_in_at, a.mile_marker, a.name AS aid_station 
+    const result = await pool.query(`SELECT r.name AS runner_name, r.bib_number, r.status, c.checked_in_at, a.mile_marker, a.name AS aid_station 
     FROM runner r
     LEFT JOIN check_in c ON r.id = c.runner_id
     LEFT JOIN aid_station a ON a.id = c.aid_station_id 
@@ -42,7 +42,7 @@ runnerRouter.get('/search', async(req:Request, res:Response) => {
 runnerRouter.get('/search/leaderboard', async(req:Request, res:Response) =>{
   const result = await pool.query(
   `SELECT * FROM (
-    SELECT DISTINCT ON (r.id) r.name AS runner_name, r.bib_number, a.mile_marker, a.name AS aid_station, c.checked_in_at
+    SELECT DISTINCT ON (r.id) r.name AS runner_name, r.bib_number, r.status, a.mile_marker, a.name AS aid_station, c.checked_in_at
     FROM runner r LEFT JOIN check_in c ON r.id = c.runner_id
     LEFT JOIN aid_station a ON a.id = c.aid_station_id
     ORDER BY r.id, a.mile_marker DESC NULLS LAST
@@ -65,10 +65,10 @@ runnerRouter.get('/:id', async(req:Request, res:Response) => {
 
 
 runnerRouter.post('/', async(req:Request, res:Response) =>{
-  const { name, age, bib_number, emergency_contact_name, emergency_contact_number, race_id} = req.body;
+  const { name, age, bib_number, emergency_contact_name, emergency_contact_number, status, race_id} = req.body;
   const result = await pool.query(
-    'INSERT INTO runner(name, age, bib_number, emergency_contact_name, emergency_contact_number, race_id) VALUES($1, $2, $3, $4, $5, $6) RETURNING *',
-    [name, age, bib_number, emergency_contact_name, emergency_contact_number, race_id] 
+    'INSERT INTO runner(name, age, bib_number, emergency_contact_name, emergency_contact_number, status, race_id,) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *',
+    [name, age, bib_number, emergency_contact_name, emergency_contact_number, status, race_id] 
   );
 
   res.json({ message: 'Runner Created:', runner: result.rows[0] })
@@ -76,10 +76,10 @@ runnerRouter.post('/', async(req:Request, res:Response) =>{
 
 runnerRouter.put('/:id', async(req: Request, res: Response) => {
   const id = req.params.id;
-  const { name, age, bib_number, emergency_contact_name, emergency_contact_number } = req.body;
+  const { name, age, bib_number, emergency_contact_name, emergency_contact_number, status } = req.body;
   const update = await pool.query(
-    'UPDATE runner SET name = $1, age = $2, bib_number = $3, emergency_contact_name = $4, emergency_contact_number = $5 WHERE id = $6 RETURNING *',
-    [name, age, bib_number, emergency_contact_name, emergency_contact_number, `${id}`]
+    'UPDATE runner SET name = $1, age = $2, bib_number = $3, emergency_contact_name = $4, emergency_contact_number = $5, status = $6 WHERE id = $7 RETURNING *',
+    [name, age, bib_number, emergency_contact_name, emergency_contact_number, status, `${id}`]
     );
     res.json({ message: `Runner ${id} updated`, runner: update.rows[0] })
 });
