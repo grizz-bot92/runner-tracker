@@ -1,0 +1,7 @@
+PATCH http://localhost:8080/runners/status
+Content-Type: application/json
+
+{
+  "bib_number": 105,
+  "status": "DNF"
+}
