@@ -84,6 +84,16 @@ runnerRouter.put('/:id', async(req: Request, res: Response) => {
     res.json({ message: `Runner ${id} updated`, runner: update.rows[0] })
 });
 
+runnerRouter.patch('/status', async (req: Request, res: Response) => {
+  const { bib_number, status} = req.body;
+  const update = await pool.query(
+    'UPDATE runner SET status = $1 WHERE bib_number = $2 RETURNING *',
+    [status, bib_number]
+  );
+
+  res.json( { message: `Runner updated`, runner: update.rows[0] } )
+});
+
 runnerRouter.delete('/:id', async(req:Request, res:Response) =>{
   const id = req.params.id;
   const result = await pool.query('DELETE FROM runner WHERE id = $1', [`${id}`])
