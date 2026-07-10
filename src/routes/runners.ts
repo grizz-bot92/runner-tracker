@@ -67,7 +67,7 @@ runnerRouter.get('/:id', async(req:Request, res:Response) => {
 runnerRouter.post('/', async(req:Request, res:Response) =>{
   const { name, age, bib_number, emergency_contact_name, emergency_contact_number, status, race_id} = req.body;
   const result = await pool.query(
-    'INSERT INTO runner(name, age, bib_number, emergency_contact_name, emergency_contact_number, status, race_id,) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *',
+    'INSERT INTO runner(name, age, bib_number, emergency_contact_name, emergency_contact_number, status, race_id) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *',
     [name, age, bib_number, emergency_contact_name, emergency_contact_number, status, race_id] 
   );
 
