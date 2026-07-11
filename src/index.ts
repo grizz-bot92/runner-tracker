@@ -7,6 +7,7 @@ import raceRouter from './routes/races';
 import runnerRouter from './routes/runners';
 import aidStationRouter from './routes/aidStations';
 import checkInRouter from './routes/check_in';
+import loginRouter from './routes/auth';
 
 dotenv.config();
 
@@ -19,7 +20,7 @@ app.use('/races', raceRouter);
 app.use('/runners', runnerRouter);
 app.use('/aid_stations', aidStationRouter);
 app.use('/check_in', checkInRouter);
-
+app.use('/auth', loginRouter)
 
 const server = createServer(app);
 
