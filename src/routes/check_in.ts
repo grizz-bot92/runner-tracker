@@ -1,5 +1,6 @@
 import express, { Request, Response, Router } from 'express';
 import pool from '../db';
+import { io } from '..';
 
 const checkInRouter: Router = express.Router();
 
@@ -39,8 +40,10 @@ checkInRouter.post('/', async(req:Request, res:Response) => {
 
   
   console.log("RAW FROM DB:", result.rows[0].checked_in_at);
-  res.json({ message: 'Check in created', checked_in: result.rows[0], displayRunner: displayRunner.rows[0] });
-
+  
+  const payLoad = { message: 'Check in created', checked_in: result.rows[0], displayRunner: displayRunner.rows[0] };
+  io.emit('checkin', payLoad);
+  res.json(payLoad);
 });
 
 
