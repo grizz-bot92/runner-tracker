@@ -7,7 +7,8 @@ import raceRouter from './routes/races';
 import runnerRouter from './routes/runners';
 import aidStationRouter from './routes/aidStations';
 import checkInRouter from './routes/check_in';
-import loginRouter from './routes/auth';
+import loginRouter from './routes/login';
+import authenticate from './middleware/auth';
 
 dotenv.config();
 
@@ -16,10 +17,10 @@ const app  = express();
 
 app.use(express.json());
 app.use(cors());
-app.use('/races', raceRouter);
+app.use('/races', authenticate, raceRouter);
 app.use('/runners', runnerRouter);
-app.use('/aid_stations', aidStationRouter);
-app.use('/check_in', checkInRouter);
+app.use('/aid_stations', authenticate, aidStationRouter);
+app.use('/check_in', authenticate, checkInRouter);
 app.use('/login', loginRouter)
 
 const server = createServer(app);

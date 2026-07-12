@@ -1,5 +1,6 @@
 import express , { Router, Request, Response, response } from "express";
 import pool from '../db';
+import authenticate from "../middleware/auth";
 
 
 const runnerRouter: Router = express.Router();
@@ -64,7 +65,7 @@ runnerRouter.get('/:id', async(req:Request, res:Response) => {
 });
 
 
-runnerRouter.post('/', async(req:Request, res:Response) =>{
+runnerRouter.post('/', authenticate, async(req:Request, res:Response) =>{
   const { name, age, bib_number, emergency_contact_name, emergency_contact_number, status, race_id} = req.body;
   const result = await pool.query(
     'INSERT INTO runner(name, age, bib_number, emergency_contact_name, emergency_contact_number, status, race_id) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *',
@@ -74,7 +75,7 @@ runnerRouter.post('/', async(req:Request, res:Response) =>{
   res.json({ message: 'Runner Created:', runner: result.rows[0] })
 });
 
-runnerRouter.put('/:id', async(req: Request, res: Response) => {
+runnerRouter.put('/:id', authenticate, async(req: Request, res: Response) => {
   const id = req.params.id;
   const { name, age, bib_number, emergency_contact_name, emergency_contact_number, status } = req.body;
   const update = await pool.query(
@@ -84,7 +85,7 @@ runnerRouter.put('/:id', async(req: Request, res: Response) => {
     res.json({ message: `Runner ${id} updated`, runner: update.rows[0] })
 });
 
-runnerRouter.patch('/status', async (req: Request, res: Response) => {
+runnerRouter.patch('/status', authenticate, async (req: Request, res: Response) => {
   const { bib_number, status} = req.body;
   const update = await pool.query(
     'UPDATE runner SET status = $1 WHERE bib_number = $2 RETURNING *',
@@ -94,7 +95,7 @@ runnerRouter.patch('/status', async (req: Request, res: Response) => {
   res.json( { message: `Runner updated`, runner: update.rows[0] } )
 });
 
-runnerRouter.delete('/:id', async(req:Request, res:Response) =>{
+runnerRouter.delete('/:id', authenticate, async(req:Request, res:Response) =>{
   const id = req.params.id;
   const result = await pool.query('DELETE FROM runner WHERE id = $1', [`${id}`])
 

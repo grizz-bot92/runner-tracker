@@ -1,6 +1,7 @@
 import express, { Request, Response, Router } from 'express';
 import pool from '../db';
 import { io } from '..';
+import authenticate from '../middleware/auth';
 
 const checkInRouter: Router = express.Router();
 
