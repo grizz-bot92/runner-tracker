@@ -17,10 +17,10 @@ const app  = express();
 
 app.use(express.json());
 app.use(cors());
-app.use('/races', authenticate, raceRouter);
+app.use('/races',raceRouter);
 app.use('/runners', runnerRouter);
-app.use('/aid_stations', authenticate, aidStationRouter);
-app.use('/check_in', authenticate, checkInRouter);
+app.use('/aid_stations', aidStationRouter);
+app.use('/check_in', checkInRouter);
 app.use('/login', loginRouter)
 
 const server = createServer(app);
@@ -32,9 +32,9 @@ export const io = new SocketIOServer(server, {
 });
 
 io.on('connection', (socket) => {
-  console.log('a user connected');
+  // console.log('a user connected');
   socket.on('disconnect', () => {
-    console.log('user disconnected');
+    // console.log('user disconnected');
   });
 });
 

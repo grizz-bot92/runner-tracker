@@ -21,7 +21,7 @@ checkInRouter.get('/:id', async(req:Request, res:Response) => {
   }
 });
 
-checkInRouter.post('/', async(req:Request, res:Response) => {
+checkInRouter.post('/', authenticate, async(req:Request, res:Response) => {
   const { bib_number, aid_station_id, checked_in_at } = req.body;
   const runner = await pool.query('SELECT id FROM runner WHERE bib_number = $1', [bib_number]);
   const runner_id = runner.rows[0].id;

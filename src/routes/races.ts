@@ -1,5 +1,6 @@
 import express, { Router, Request, Response } from 'express';
 import pool from '../db';
+import authenticate from '../middleware/auth';
 
 const  raceRouter: Router = express.Router();
 
@@ -20,7 +21,7 @@ raceRouter.get('/:id', async(req: Request, res: Response) => {
 
 });
 
-raceRouter.post('/', async (req: Request, res: Response) => {
+raceRouter.post('/', authenticate, async (req: Request, res: Response) => {
   const { name, date, distance, elevation_gain, cutoff_time } = req.body;
   const result = await pool.query(
     'INSERT INTO race(name, date, distance, elevation_gain, cutoff_time) VALUES($1, $2, $3, $4, $5) RETURNING *',
@@ -43,7 +44,7 @@ raceRouter.put('/:id', async(req:Request, res:Response) =>{
 });
 
 
-raceRouter.delete('/:id', async(req:Request, res:Response) =>{
+raceRouter.delete('/:id', authenticate, async(req:Request, res:Response) =>{
   const id = req.params.id;
   const result = await pool.query('DELETE FROM race WHERE id = $1', [`${id}`]);
   res.status(204).end();

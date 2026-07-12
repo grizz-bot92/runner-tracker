@@ -1,5 +1,6 @@
 import express, { Request, Response, Router} from 'express';
 import pool from '../db';
+import authenticate from '../middleware/auth';
 
 const aidStationRouter: Router  = express.Router();
 
@@ -19,7 +20,7 @@ aidStationRouter.get('/:id', async(req:Request, res:Response) => {
   }
 });
 
-aidStationRouter.post('/', async(req:Request, res:Response) =>{
+aidStationRouter.post('/', authenticate, async(req:Request, res:Response) =>{
   const { name, mile_marker, cutoff_time, crew_access, race_id } = req.body;
 
   const result = await pool.query(
@@ -29,7 +30,7 @@ aidStationRouter.post('/', async(req:Request, res:Response) =>{
     res.json({ message: 'Aid Station created', aid_station: result.rows[0] })
 });
 
-aidStationRouter.put('/:id', async(req:Request, res:Response) => { 
+aidStationRouter.put('/:id', authenticate, async(req:Request, res:Response) => { 
   const id = req.params.id;
   const { name, mile_marker, cutoff_time, crew_access } = req.body;
   const update = await pool.query(
@@ -41,7 +42,7 @@ aidStationRouter.put('/:id', async(req:Request, res:Response) => {
 
 });
 
-aidStationRouter.delete('/:id', async(req:Request, res:Response) =>{
+aidStationRouter.delete('/:id', authenticate, async(req:Request, res:Response) =>{
   const id = req.params.id;
   const result = await pool.query('DELETE FROM aid_station WHERE id = $1', [`${id}`]);
   
