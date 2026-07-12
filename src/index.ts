@@ -20,7 +20,7 @@ app.use('/races', raceRouter);
 app.use('/runners', runnerRouter);
 app.use('/aid_stations', aidStationRouter);
 app.use('/check_in', checkInRouter);
-app.use('/auth', loginRouter)
+app.use('/login', loginRouter)
 
 const server = createServer(app);
 
