@@ -12,4 +12,4 @@ async function createUser(username: string, password: string, role: string) {
   process.exit(0);
 }
 
-createUser('Brandon', 'password123', 'admin');
+createUser('Bella', 'password456', 'volunteer');

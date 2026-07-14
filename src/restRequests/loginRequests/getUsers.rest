@@ -1,1 +1,1 @@
-GET http://localhost:8080/auth
+GET http://localhost:8080/login
