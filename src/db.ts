@@ -3,15 +3,16 @@ import { Pool } from 'pg';
 
 dotenv.config();
 
-const pool = process.env.DATABASE_URL 
+const pool = process.env.DB_URL 
   ? new Pool({
-    connectionString: process.env.DATABASE_URL,
+    connectionString: process.env.DB_URL,
     ssl: { rejectUnauthorized: false }
   }) 
   : new Pool({
     user: process.env.DB_USER,
     host: process.env.DB_HOST,
-    database: process.env.DB_NAME,
+    // database: process.env.DB_NAME,
+    database: process.env.DB_URL,
     password: process.env.DB_PASSWORD,
     port: Number(process.env.DB_PORT),
   })
