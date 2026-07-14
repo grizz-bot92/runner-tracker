@@ -11,3 +11,5 @@ async function createUser(username: string, password: string, role: string) {
   console.log('user created:', result.rows[0]);
   process.exit(0);
 }
+
+createUser('Brandon', 'password123', 'admin');

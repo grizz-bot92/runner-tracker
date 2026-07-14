@@ -22,6 +22,7 @@ loginRouter.post('/', async (req:Request, res: Response) => {
   const userForToken = {
     username: user.username,
     id: user.id,
+    role: user.role
   };
 
   const secret = process.env.SECRET;
