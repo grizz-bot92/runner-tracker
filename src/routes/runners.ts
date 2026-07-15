@@ -50,7 +50,7 @@ runnerRouter.get('/search/leaderboard', async(req:Request, res:Response) =>{
     ORDER BY r.id, a.mile_marker DESC NULLS LAST
   ) AS Leaderboard
    ORDER BY 
-   CASE WHEN status = 'active' THEN 0 ELSE 1 END,
+   CASE WHEN status = 'active'  OR status IS NULL THEN 0 ELSE 1 END,
    mile_marker DESC NULLS LAST`);
 
     res.json({ message: 'runner update', runner: result.rows });
