@@ -1,6 +1,7 @@
 import express , { Router, Request, Response, response } from "express";
 import pool from '../db';
-import authenticate from "../middleware/auth";
+import { io } from '..';
+import { authenticate } from '../middleware/auth' 
 
 
 const runnerRouter: Router = express.Router();
@@ -92,7 +93,9 @@ runnerRouter.patch('/status', authenticate, async (req: Request, res: Response) 
     [status, bib_number]
   );
 
-  res.json( { message: `Runner updated`, runner: update.rows[0] } )
+  const payLoad = { message: `Runner updated`, runner: update.rows[0] }
+  io.emit('status', payLoad);
+  res.json(payLoad);
 });
 
 runnerRouter.delete('/:id', authenticate, async(req:Request, res:Response) =>{
