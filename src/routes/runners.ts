@@ -1,7 +1,7 @@
 import express , { Router, Request, Response, response } from "express";
 import pool from '../db';
 import { io } from '..';
-import { authenticate } from '../middleware/auth' 
+import authenticate from '../middleware/auth';
 
 
 const runnerRouter: Router = express.Router();
