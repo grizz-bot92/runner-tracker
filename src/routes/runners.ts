@@ -1,4 +1,4 @@
-import express , { Router, Request, Response, response } from "express";
+import express , { Router, Request, Response } from "express";
 import pool from '../db';
 import { io } from '..';
 import authenticate from '../middleware/auth';
