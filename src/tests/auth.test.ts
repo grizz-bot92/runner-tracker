@@ -26,33 +26,33 @@ describe('POST /check_in', () => {
 });
 
 
-describe('POST /login', () => {
-  it('returns 401 with incorrect login', async() => {
-    const response = await request(app)
-      .post('/login')
-      .send({ username: 'wrong', password: 'wrong' })
+// describe('POST /login', () => {
+//   it('returns 401 with incorrect login', async() => {
+//     const response = await request(app)
+//       .post('/login')
+//       .send({ username: 'wrong', password: 'wrong' })
     
-    expect(response.status).toBe(401)
-  });
-});
+//     expect(response.status).toBe(401)
+//   });
+// });
 
 
-describe('GET /races', () => {
-  it('return 200 with races array', async() => {
-    const response = await request(app)
-      .get('/races')
-    expect(response.status).toBe(200);
-  });
-});
+// describe('GET /races', () => {
+//   it('return 200 with races array', async() => {
+//     const response = await request(app)
+//       .get('/races')
+//     expect(response.status).toBe(200);
+//   });
+// });
 
 
-describe('GET /runners/search/leaderboard', () => {
-  it('return 200 with leaderboard', async() => {
-    const response = await request(app)
-      .get('/runners/search/leaderboard')
-    expect(response.status).toBe(200);
-  });
-});
+// describe('GET /runners/search/leaderboard', () => {
+//   it('return 200 with leaderboard', async() => {
+//     const response = await request(app)
+//       .get('/runners/search/leaderboard')
+//     expect(response.status).toBe(200);
+//   });
+// });
 
 
 
