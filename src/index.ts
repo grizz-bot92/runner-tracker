@@ -8,7 +8,7 @@ import runnerRouter from './routes/runners';
 import aidStationRouter from './routes/aidStations';
 import checkInRouter from './routes/check_in';
 import loginRouter from './routes/login';
-import authenticate from './middleware/auth';
+
 
 dotenv.config();
 
@@ -43,8 +43,14 @@ app.get('/', (req, res) => {
   res.json({message: 'Runner tracker API'});
 })
 
+export default app;
 
-server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
-});
+
+if(process.env.NODE_ENV !== 'test'){
+    server.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`)
+  });
+}
+
+
 
